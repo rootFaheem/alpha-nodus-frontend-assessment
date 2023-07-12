@@ -2,7 +2,7 @@
   background-color: #eeee;
   margin: 0px 16px;
   padding: 16px;
-  max-height: calc(100vh - 96px);
+  max-height: calc(100vh - 64px);
   overflow-y: scroll;
 }
 

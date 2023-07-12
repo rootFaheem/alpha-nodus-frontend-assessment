@@ -1,11 +1,14 @@
+import { useQuery } from "@apollo/client";
+import AddIcon from "@mui/icons-material/Add";
+import LoopIcon from "@mui/icons-material/Loop";
 import { Box, Button, Grid, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import "./LocationList.css";
-import LoopIcon from "@mui/icons-material/Loop";
-import { gql, useQuery } from "@apollo/client";
-import SearchField from "./SearchField";
-import LocationCard from "./LocationCard";
 import { FETCH_LOCATIONS } from "../GraphQL/Queries";
+import LocationCard from "./LocationCard";
+import Pagination from "@mui/material/Pagination";
+
+import "./LocationList.css";
+import SearchField from "./SearchField";
 
 interface Props {
   setSelectedLocation: React.Dispatch<React.SetStateAction<string>>;
@@ -23,6 +26,7 @@ export interface LocationsList {
 const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
+  const [pageCount, setPageCount] = useState<number>(5);
   const [locationList, setLocationList] = useState<LocationsList[]>();
   const [searchText, setSearchText] = useState<string>("");
 
@@ -31,31 +35,30 @@ const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
       tenant: "692627ef-fda8-4203-b108-e8e9f52ad410",
       page: page,
       limit: limit,
+      search: searchText,
     },
   });
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value - 1);
+  };
+
+  useEffect(() => {
+    if (data?.locationList?.resources?.[0]) {
+      setLocationList(data?.locationList?.resources);
+      setPageCount(data?.locationList?.pages);
+    }
+  }, [data?.locationList, searchText]);
 
   useEffect(() => {
     fetchMore({
       variables: {
         page,
         limit,
+        search: searchText,
       },
     });
-  }, [page, limit]);
-
-  useEffect(() => {
-    if (data?.locationList?.resources?.[0]) {
-      if (searchText) {
-        setLocationList(
-          data?.locationList?.resources?.filter((item: LocationsList) =>
-            item?.name.includes(searchText)
-          )
-        );
-      } else {
-        setLocationList(data?.locationList?.resources);
-      }
-    }
-  }, [data, searchText]);
+  }, [page, limit, searchText]);
 
   if (loading) return <span>Loading...</span>;
 
@@ -73,9 +76,10 @@ const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
           >
             <LoopIcon />
           </Button>
-          <Box className="heading" onClick={() => setLimit(6)}>
-            Locations
-          </Box>
+          <Box className="heading">Locations</Box>
+          <Button variant="outlined" size="small">
+            <AddIcon />
+          </Button>
         </Stack>
       </Grid>
       <Grid item container xs={12} mt={2} mb={2}>
@@ -117,8 +121,13 @@ const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
           ))}
       </Grid>
       <Grid item container xs={12}>
-        {" "}
-        Pagination
+        <Pagination
+          count={pageCount}
+          page={page + 1}
+          onChange={handleChange}
+          variant="outlined"
+          color="primary"
+        />
       </Grid>
     </Grid>
   );
