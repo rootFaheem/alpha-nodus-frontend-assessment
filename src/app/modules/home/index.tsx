@@ -6,7 +6,9 @@ const LocationDetails = lazy(() => import("../../components/LocationDetails"));
 const LocationList = lazy(() => import("../../components/LocationList"));
 
 function App() {
-  const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const [selectedLocation, setSelectedLocation] = useState<string>(
+    "ba0b0d2d-34c1-4389-8eff-98287a25058b"
+  );
 
   return (
     <div>

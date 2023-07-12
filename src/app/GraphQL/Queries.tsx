@@ -27,3 +27,33 @@ export const FETCH_LOCATIONS = gql`
     }
   }
 `;
+
+export const FETCH_LOCATIONS_DETAILS = gql`
+  query fetchLocationDetails($locationReadId: String!, $tenant: String!) {
+    locationRead(id: $locationReadId, tenant: $tenant) {
+      id
+      resource {
+        address
+        alias
+        description
+        id
+        managingOrganization
+        name
+        npi
+        partOf
+        status
+        tag
+        taxId
+        tenant
+        type
+        updatedAt
+        telecom {
+          rank
+          system
+          use
+          value
+        }
+      }
+    }
+  }
+`;

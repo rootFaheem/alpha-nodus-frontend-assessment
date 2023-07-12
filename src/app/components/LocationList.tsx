@@ -10,6 +10,8 @@ import Pagination from "@mui/material/Pagination";
 import "./LocationList.css";
 import SearchField from "./SearchField";
 
+export const TENANT = "692627ef-fda8-4203-b108-e8e9f52ad410";
+
 interface Props {
   selectedLocation: string;
   setSelectedLocation: React.Dispatch<React.SetStateAction<string>>;
@@ -38,7 +40,7 @@ const LocationList: React.FC<Props> = ({
 
   const { error, loading, data, fetchMore } = useQuery(FETCH_LOCATIONS, {
     variables: {
-      tenant: "692627ef-fda8-4203-b108-e8e9f52ad410",
+      tenant: TENANT,
       page: page,
       limit: limit,
       search: searchText,
