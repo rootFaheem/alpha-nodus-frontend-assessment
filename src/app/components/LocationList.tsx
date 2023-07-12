@@ -11,6 +11,7 @@ import "./LocationList.css";
 import SearchField from "./SearchField";
 
 interface Props {
+  selectedLocation: string;
   setSelectedLocation: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -23,12 +24,17 @@ export interface LocationsList {
   updatedAt: number;
 }
 
-const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
+const LocationList: React.FC<Props> = ({
+  selectedLocation,
+  setSelectedLocation,
+}) => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [pageCount, setPageCount] = useState<number>(5);
   const [locationList, setLocationList] = useState<LocationsList[]>();
   const [searchText, setSearchText] = useState<string>("");
+  const [refetch, setRefetch] = useState<boolean>(false);
+  const [orderBy, setOrderBy] = useState<string>("desc");
 
   const { error, loading, data, fetchMore } = useQuery(FETCH_LOCATIONS, {
     variables: {
@@ -36,6 +42,7 @@ const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
       page: page,
       limit: limit,
       search: searchText,
+      order: orderBy,
     },
   });
 
@@ -56,9 +63,23 @@ const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
         page,
         limit,
         search: searchText,
+        order: orderBy,
       },
     });
-  }, [page, limit, searchText]);
+  }, [page, limit, searchText, orderBy]);
+
+  useEffect(() => {
+    if (refetch) {
+      fetchMore({
+        variables: {
+          page,
+          limit,
+          search: searchText,
+          order: orderBy,
+        },
+      });
+    }
+  }, [refetch]);
 
   if (loading) return <span>Loading...</span>;
 
@@ -73,6 +94,10 @@ const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
             fullWidth={true}
             size="small"
             className="refresh_btn"
+            onClick={() => {
+              setRefetch(true);
+              setTimeout(() => setRefetch(false), 1000);
+            }}
           >
             <LoopIcon />
           </Button>
@@ -96,17 +121,26 @@ const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
             pb: 2,
           }}
         >
-          {[1, 2, 3, 4, 5, 6, 7].map((item) => (
-            <Button
-              variant="outlined"
-              size="small"
-              sx={{
-                minWidth: "80px",
-              }}
-            >
-              Filter {item}
-            </Button>
-          ))}
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{
+              minWidth: "80px",
+            }}
+            onClick={() => setOrderBy("asc")}
+          >
+            ORDER: ASC
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{
+              minWidth: "80px",
+            }}
+            onClick={() => setOrderBy("desc")}
+          >
+            ORDER: DESC
+          </Button>
         </Stack>
       </Grid>
 
@@ -116,6 +150,7 @@ const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
           locationList?.map((locData) => (
             <LocationCard
               locData={locData}
+              selectedLocation={selectedLocation}
               setSelectedLocation={setSelectedLocation}
             />
           ))}

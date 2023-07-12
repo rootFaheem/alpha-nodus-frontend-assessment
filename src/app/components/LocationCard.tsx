@@ -9,13 +9,34 @@ import { LocationsList } from "./LocationList";
 
 interface Props {
   locData: LocationsList;
+  selectedLocation: string;
   setSelectedLocation: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const LocationCard: React.FC<Props> = ({ locData, setSelectedLocation }) => {
+const LocationCard: React.FC<Props> = ({
+  locData,
+  selectedLocation,
+  setSelectedLocation,
+}) => {
   return (
     <Card
-      sx={{ minWidth: "100%", mb: 2, "&:hover": { cursor: "pointer" } }}
+      sx={{
+        minWidth: "100%",
+        mb: 2,
+        background:
+          selectedLocation === locData?.id
+            ? "rgba(255, 255, 255, 0.5)"
+            : "auto",
+        border:
+          selectedLocation === locData?.id ? "1.8px solid #556CD6" : "auto",
+        boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+        transition: "0.2s",
+
+        "&:hover": {
+          cursor: "pointer",
+          boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",
+        },
+      }}
       onClick={() => setSelectedLocation(locData?.id)}
     >
       <CardContent>
