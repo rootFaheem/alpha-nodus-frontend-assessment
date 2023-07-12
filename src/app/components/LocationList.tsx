@@ -1,16 +1,58 @@
 import { Box, Button, Grid, Stack } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './LocationList.css'
 import LoopIcon from '@mui/icons-material/Loop';
+import { gql, useQuery } from '@apollo/client';
 import SearchField from './SearchField';
 import LocationCard from './LocationCard';
+import { FETCH_LOCATIONS } from '../GraphQL/Queries';
 
 interface Props {
     setSelectedLocation: React.Dispatch<React.SetStateAction<string>>;
 }
 
+export interface LocationsList {
+    id: string,
+    name: string,
+    status: string,
+    address: string,
+    type: string,
+    updatedAt: number,
+}
 
 const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
+
+    const [page, setPage] = useState<number>(0)
+    const [limit, setLimit] = useState<number>(5)
+    const [locationList, setLocationList] = useState<LocationsList[]>()
+
+    const { error, loading, data, fetchMore } = useQuery(FETCH_LOCATIONS, {
+        variables: {
+            tenant: "692627ef-fda8-4203-b108-e8e9f52ad410",
+            page: page,
+            limit: limit,
+        }
+
+    });
+
+    useEffect(() => {
+        fetchMore({
+            variables: {
+                page,
+                limit,
+            }
+        });
+
+    }, [page, limit])
+
+    useEffect(() => {
+        if (data?.locationList?.resources?.[0]) {
+            setLocationList(data?.locationList?.resources)
+        }
+    }, [data])
+
+    if (loading) return <span>Loading...</span>;
+    if (error) return <p>Oops! {error?.message}</p>;
     return (
         <Grid item container xs={12} className='list_container'>
             <Grid item container xs={12} alignItems="center">
@@ -18,7 +60,7 @@ const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
                     <Button variant="outlined" fullWidth={true} size='small' className='refresh_btn'>
                         <LoopIcon />
                     </Button>
-                    <Box className="heading">
+                    <Box className="heading" onClick={() => setLimit(6)}>
                         Locations
                     </Box>
                 </Stack>
@@ -48,8 +90,8 @@ const LocationList: React.FC<Props> = ({ setSelectedLocation }) => {
 
             <Grid item container xs={12}
                 mb={2}> {
-                    [1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-                        <LocationCard id={item?.toString()} setSelectedLocation={setSelectedLocation} />
+                    locationList && locationList?.map((locData) => (
+                        <LocationCard locData={locData} setSelectedLocation={setSelectedLocation} />
                     ))
                 }</Grid>
             <Grid item container xs={12}> Pagination</Grid>
