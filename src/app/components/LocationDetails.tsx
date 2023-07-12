@@ -2,10 +2,14 @@
 import { Grid } from '@mui/material'
 import React from 'react'
 
-const LocationDetails = () => {
+interface Props {
+    selectedLocation: string
+}
+
+const LocationDetails: React.FC<Props> = ({ selectedLocation }) => {
     return (
         <Grid item container xs={12} >
-            Location Details...
+            Location Details...{selectedLocation}
         </Grid>
     )
 }

@@ -1,3 +1,25 @@
 .list_container {
   background-color: #eeee;
+  margin: 0px 16px;
+  padding: 16px;
+  max-height: calc(100vh - 96px);
+  overflow-y: scroll;
+}
+
+.refresh_btn {
+  max-width: 100px;
+}
+
+.heading {
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+}
+
+.status {
+  background-color: hsl(40, 100%, 85%);
+  padding: 6px 8px 0px 8px;
+  border-radius: 16px;
+  font-weight: 600 !important;
+  color: rgba(0, 0, 0, 0.6);
 }
