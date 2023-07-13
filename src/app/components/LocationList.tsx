@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import AddIcon from "@mui/icons-material/Add";
 import LoopIcon from "@mui/icons-material/Loop";
-import { Box, Button, Grid, Stack } from "@mui/material";
+import { Box, Button, Grid, MenuItem, Stack, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { FETCH_LOCATIONS } from "../GraphQL/Queries";
 import LocationCard from "./LocationCard";
@@ -96,6 +96,9 @@ const LocationList: React.FC<Props> = ({
       xs={12}
       className="list_container"
       alignItems="flex-start"
+      sx={{
+        position: "relative",
+      }}
     >
       <Grid item container xs={12} alignItems="flex-start">
         <Stack direction="row" alignItems="center" width="100%">
@@ -165,6 +168,9 @@ const LocationList: React.FC<Props> = ({
         mb={2}
         sx={{
           minHeight: "50vh",
+          maxHeight: "70vh",
+          overflowY: "scroll",
+          pb: 10,
         }}
       >
         {loading ? (
@@ -182,14 +188,51 @@ const LocationList: React.FC<Props> = ({
           ))
         )}
       </Grid>
-      <Grid item container xs={12}>
-        <Pagination
-          count={pageCount}
-          page={page + 1}
-          onChange={handleChange}
-          variant="outlined"
-          color="primary"
-        />
+      <Grid
+        item
+        container
+        xs={12}
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          background: "#eee",
+          pt: 3,
+        }}
+      >
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          sx={{ width: "100%" }}
+        >
+          <Pagination
+            count={pageCount}
+            page={page + 1}
+            onChange={handleChange}
+            variant="outlined"
+            color="primary"
+          />
+
+          <TextField
+            size="small"
+            id="outlined-select-currency"
+            select
+            label="Per Page"
+            value={limit}
+            onChange={(e) => setLimit(Number(e.target.value))}
+            sx={{
+              pr: 2,
+              pb: 2,
+              minWidth: "95px",
+            }}
+          >
+            {[5, 10, 20, 50].map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Stack>
       </Grid>
       {openDialog ? (
         <FormDialog openDialog={openDialog} setOpenDialog={setOpenDialog} />

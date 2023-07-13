@@ -21,6 +21,8 @@ const LocationCard: React.FC<Props> = ({
   return (
     <Card
       sx={{
+        minHeight: "130px",
+        maxHeight: "130px",
         minWidth: "100%",
         mb: 2,
         background:

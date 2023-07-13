@@ -1,5 +1,5 @@
 import LoopIcon from "@mui/icons-material/Loop";
-import { Box, Button, Grid, Stack } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useLazyQuery } from "@apollo/client";
@@ -62,7 +62,9 @@ const LocationDetails: React.FC<Props> = ({
 
   if ((!data && !loading) || !locData)
     return (
-      <Box p={5}>Please select card from left panel to show the details...</Box>
+      <Box p={5}>
+        Please select a card from left panel to see the details...
+      </Box>
     );
 
   const viewProps = [
@@ -140,7 +142,7 @@ const LocationDetails: React.FC<Props> = ({
       <Grid item container xs={12}>
         <Card sx={{ width: "calc(100% - 20px)" }}>
           <CardContent>
-            <Box mb={3}>
+            <Box mb={2}>
               <Stack direction="row" justifyContent="space-between">
                 <Button
                   variant="outlined"
@@ -151,6 +153,9 @@ const LocationDetails: React.FC<Props> = ({
                 >
                   <LoopIcon />
                 </Button>
+                <Typography variant="h5">
+                  {locData?.name}'s Full Details
+                </Typography>
                 <MenuOptions
                   id={selectedLocation}
                   setSelectedLocation={setSelectedLocation}
@@ -158,24 +163,19 @@ const LocationDetails: React.FC<Props> = ({
                 />
               </Stack>
             </Box>
+            <hr />
             {viewProps?.map((item, index) => (
               <Grid item container xs={12} key={`some-random-key-${index}`}>
                 <InputField
                   label={item?.label}
                   value={item?.value}
                   name={item?.name}
+                  ID={selectedLocation}
                 />
               </Grid>
             ))}
           </CardContent>
         </Card>
-
-        {/* <Grid item container xs={6}>
-          <Box>
-            {locData?.telecom &&
-              locData?.telecom?.map((item: unknown) => <div>{item}</div>)}
-          </Box>
-        </Grid> */}
       </Grid>
     </Grid>
   );

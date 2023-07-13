@@ -17,15 +17,6 @@ import { ADD_NEW_LOCATION } from "../GraphQL/Mutations";
 import { TENANT } from "./LocationList";
 import { FETCH_LOCATIONS } from "../GraphQL/Queries";
 
-// const CustomDialog = styled(Dialog)(({ theme }) => ({
-//   "& .MuiDialogContent-root": {
-//     padding: theme.spacing(2),
-//   },
-//   "& .MuiDialogActions-root": {
-//     padding: theme.spacing(1),
-//   },
-// }));
-
 export interface DialogTitleProps {
   id: string;
   children?: React.ReactNode;
@@ -295,26 +286,6 @@ const FormDialog: React.FC<Props> = ({ openDialog, setOpenDialog }) => {
                     helperText={touched.updatedAt && errors.updatedAt}
                     variant="outlined"
                   />
-                </div>
-                <div>
-                  {/* <TextField
-                    size="small"
-                    fullWidth
-                    label="updatedAt"
-                    {...getFieldProps("updatedAt")}
-                    error={Boolean(touched?.updatedAt && errors?.updatedAt)}
-                    helperText={touched.updatedAt && errors.updatedAt}
-                    variant="outlined"
-                  /> */}
-                  {/* <TextField
-                    size="small"
-                    fullWidth
-                    label="Status"
-                    {...getFieldProps("status")}
-                    error={Boolean(touched?.status && errors?.status)}
-                    helperText={touched.status && errors.status}
-                    variant="outlined"
-                  /> */}
                 </div>
               </Box>
             </DialogContent>

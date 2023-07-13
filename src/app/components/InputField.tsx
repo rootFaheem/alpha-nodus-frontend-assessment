@@ -14,9 +14,10 @@ interface Props {
   label: string;
   value: string;
   name: string;
+  ID: string;
 }
 
-const InputField: React.FC<Props> = ({ label, value, name }) => {
+const InputField: React.FC<Props> = ({ label, value, name, ID }) => {
   const [text, setText] = useState<string>(value);
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
@@ -30,7 +31,7 @@ const InputField: React.FC<Props> = ({ label, value, name }) => {
     locationPatch({
       variables: {
         tenant: TENANT,
-        locationPatchId: "1b16071e-0616-4474-ac98-f6cbf2cd35d9",
+        locationPatchId: ID,
         requestBody: {
           [name]: text,
         },
@@ -50,7 +51,7 @@ const InputField: React.FC<Props> = ({ label, value, name }) => {
       justifyContent="center"
       mb={2}
     >
-      <Box fontSize={name == "name" ? "h4.fontSize" : "body1.fontSize"}>
+      <Box fontSize={name == "name" ? "h6.fontSize" : "body1.fontSize"}>
         <b>{label}:</b> {!isEdit && value}
       </Box>
 
