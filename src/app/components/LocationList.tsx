@@ -10,8 +10,7 @@ import Pagination from "@mui/material/Pagination";
 import "./locationList.css";
 import SearchField from "./SearchField";
 import FormDialog from "./FormDialog";
-
-export const TENANT = "692627ef-fda8-4203-b108-e8e9f52ad410";
+import { TENANT } from "../../utils/constants";
 
 interface Props {
   selectedLocation: string;

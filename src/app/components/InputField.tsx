@@ -8,7 +8,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import { PATCH_LOCATION } from "../GraphQL/Mutations";
 import { useMutation } from "@apollo/client";
 import { FETCH_LOCATIONS_DETAILS } from "../GraphQL/Queries";
-import { TENANT } from "./LocationList";
+import { TENANT } from "../../utils/constants";
 
 interface Props {
   label: string;

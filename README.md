@@ -21,6 +21,8 @@ You need to clone the repo then follow the steps in "Executing project"
 
 ### Executing project
 
+- Update the "ACCESS_TOKEN" value in the `"src/utils/constants.tsx"` file
+- Update the "TENANT" value in the `"src/utils/constants.tsx"` file
 - To run the project follow these steps:
 
 ```

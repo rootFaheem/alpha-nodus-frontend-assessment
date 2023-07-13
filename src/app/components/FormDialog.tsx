@@ -14,8 +14,8 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/material";
 import { useMutation } from "@apollo/client";
 import { ADD_NEW_LOCATION } from "../GraphQL/Mutations";
-import { TENANT } from "./LocationList";
 import { FETCH_LOCATIONS } from "../GraphQL/Queries";
+import { TENANT } from "../../utils/constants";
 
 export interface DialogTitleProps {
   id: string;

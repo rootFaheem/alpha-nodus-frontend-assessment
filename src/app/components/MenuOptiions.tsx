@@ -17,8 +17,8 @@ import Logout from "@mui/icons-material/Logout";
 import { Button } from "@mui/material";
 import { useMutation } from "@apollo/client";
 import { FETCH_LOCATIONS, FETCH_LOCATIONS_DETAILS } from "../GraphQL/Queries";
-import { TENANT } from "./LocationList";
 import { LocationFullDetails } from "./LocationDetails";
+import { TENANT } from "../../utils/constants";
 
 interface Props {
   id: string;

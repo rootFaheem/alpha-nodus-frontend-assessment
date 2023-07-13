@@ -6,8 +6,8 @@ import { useLazyQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { FETCH_LOCATIONS_DETAILS } from "../GraphQL/Queries";
 import InputField from "./InputField";
-import { TENANT } from "./LocationList";
 import MenuOptions from "./MenuOptiions";
+import { TENANT } from "../../utils/constants";
 
 interface Props {
   selectedLocation: string;
