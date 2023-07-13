@@ -7,8 +7,9 @@ import { FETCH_LOCATIONS } from "../GraphQL/Queries";
 import LocationCard from "./LocationCard";
 import Pagination from "@mui/material/Pagination";
 
-import "./LocationList.css";
+import "./locationList.css";
 import SearchField from "./SearchField";
+import FormDialog from "./FormDialog";
 
 export const TENANT = "692627ef-fda8-4203-b108-e8e9f52ad410";
 
@@ -37,6 +38,7 @@ const LocationList: React.FC<Props> = ({
   const [searchText, setSearchText] = useState<string>("");
   const [refetch, setRefetch] = useState<boolean>(false);
   const [orderBy, setOrderBy] = useState<string>("desc");
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   const { error, loading, data, fetchMore } = useQuery(FETCH_LOCATIONS, {
     variables: {
@@ -83,13 +85,19 @@ const LocationList: React.FC<Props> = ({
     }
   }, [refetch]);
 
-  if (loading) return <span>Loading...</span>;
+  // if (loading) return <span>Loading...</span>;
 
   if (error) return <p>Oops! {error?.message}</p>;
 
   return (
-    <Grid item container xs={12} className="list_container">
-      <Grid item container xs={12} alignItems="center">
+    <Grid
+      item
+      container
+      xs={12}
+      className="list_container"
+      alignItems="flex-start"
+    >
+      <Grid item container xs={12} alignItems="flex-start">
         <Stack direction="row" alignItems="center" width="100%">
           <Button
             variant="outlined"
@@ -104,7 +112,11 @@ const LocationList: React.FC<Props> = ({
             <LoopIcon />
           </Button>
           <Box className="heading">Locations</Box>
-          <Button variant="outlined" size="small">
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => setOpenDialog(true)}
+          >
             <AddIcon />
           </Button>
         </Stack>
@@ -113,7 +125,7 @@ const LocationList: React.FC<Props> = ({
         <SearchField searchText={searchText} setSearchText={setSearchText} />
       </Grid>
 
-      <Grid item container xs={12}>
+      <Grid item container xs={12} alignItems="flex-start">
         <Stack
           direction="row"
           spacing={2}
@@ -146,16 +158,29 @@ const LocationList: React.FC<Props> = ({
         </Stack>
       </Grid>
 
-      <Grid item container xs={12} mb={2}>
-        {" "}
-        {locationList &&
+      <Grid
+        item
+        container
+        xs={12}
+        mb={2}
+        sx={{
+          minHeight: "50vh",
+        }}
+      >
+        {loading ? (
+          <Box pt={4} textAlign="center" width="100%">
+            Loading...
+          </Box>
+        ) : (
+          locationList &&
           locationList?.map((locData) => (
             <LocationCard
               locData={locData}
               selectedLocation={selectedLocation}
               setSelectedLocation={setSelectedLocation}
             />
-          ))}
+          ))
+        )}
       </Grid>
       <Grid item container xs={12}>
         <Pagination
@@ -166,6 +191,9 @@ const LocationList: React.FC<Props> = ({
           color="primary"
         />
       </Grid>
+      {openDialog ? (
+        <FormDialog openDialog={openDialog} setOpenDialog={setOpenDialog} />
+      ) : null}
     </Grid>
   );
 };
